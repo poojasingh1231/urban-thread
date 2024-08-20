@@ -1,26 +1,37 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import LoginPage from './pages/LoginPage'; // Ensure this import is correct
+import HomePage from './pages/HomePage';
+import ProductDetailPage from './pages/ProductDetailPage';
+import CategoryPage from './pages/CategoryPage';
+import CartPage from './pages/CartPage';
+import SuccessPage from './pages/SuccessPage';
+import ProfilePage from './pages/ProfilePage';
+import { RootState } from './redux/store';
 
-function App() {
+const App: React.FC = () => {
+  const token = useSelector((state: RootState) => state.auth.token);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        {!token ? (
+          <Route path="*" element={<LoginPage />} /> // {/* Redirects to LoginPage if not authenticated */}
+        ) : (
+          <>
+            <Route path="/login" element={<Navigate to="/" replace />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/product/:productId" element={<ProductDetailPage />} />
+            <Route path="/category/:categoryName" element={<CategoryPage />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/success" element={<SuccessPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </>
+        )}
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
