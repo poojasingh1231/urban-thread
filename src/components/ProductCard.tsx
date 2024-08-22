@@ -1,8 +1,9 @@
 import React from 'react';
 import { Card, CardMedia, CardContent, Typography, IconButton, Box } from '@mui/material';
-import { AddShoppingCart } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
-import { addToCart } from '../redux/slices/cartSlice';
+import { AddShoppingCart, Add, Remove } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, removeFromCart, updateQuantity } from '../redux/slices/cartSlice';
+import { RootState } from '../redux/store';
 import { useNavigate } from 'react-router-dom';
 
 interface Product {
@@ -21,10 +22,27 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const cartItem = useSelector((state: RootState) =>
+    state.cart.items.find((item) => item.product.id === product.id)
+  );
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     dispatch(addToCart(product));
+  };
+
+  const handleIncrease = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    dispatch(updateQuantity({ id: product.id, quantity: cartItem!.quantity + 1 }));
+  };
+
+  const handleDecrease = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (cartItem!.quantity > 1) {
+      dispatch(updateQuantity({ id: product.id, quantity: cartItem!.quantity - 1 }));
+    } else {
+      dispatch(removeFromCart({ id: product.id }));
+    }
   };
 
   const handleCardClick = () => {
@@ -89,9 +107,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <Typography variant="body2" color="text.secondary">
           ${product.price}
         </Typography>
-        <IconButton onClick={handleAddToCart} aria-label="add to cart" color="primary">
-          <AddShoppingCart />
-        </IconButton>
+        {cartItem ? (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton onClick={handleDecrease} aria-label="decrease quantity" color="primary">
+              <Remove />
+            </IconButton>
+            <Typography>{cartItem.quantity}</Typography>
+            <IconButton onClick={handleIncrease} aria-label="increase quantity" color="primary">
+              <Add />
+            </IconButton>
+          </Box>
+        ) : (
+          <IconButton onClick={handleAddToCart} aria-label="add to cart" color="primary">
+            <AddShoppingCart />
+          </IconButton>
+        )}
       </Box>
     </Card>
   );

@@ -5,7 +5,11 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../redux/store';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  showCartIcon?: boolean; // This prop controls the visibility of the cart icon
+}
+
+const Header: React.FC<HeaderProps> = ({ showCartIcon = true }) => {
   const cartCount = useSelector((state: RootState) => state.cart.items.length);
   const username = useSelector((state: RootState) => state.auth.username);
   const navigate = useNavigate();
@@ -17,11 +21,13 @@ const Header: React.FC = () => {
           My Store
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton color="inherit" onClick={() => navigate('/cart')}>
-            <Badge badgeContent={cartCount} color="secondary">
-              <ShoppingCart />
-            </Badge>
-          </IconButton>
+          {showCartIcon && (  // Check if the cart icon should be shown
+            <IconButton color="inherit" onClick={() => navigate('/cart')}>
+              <Badge badgeContent={cartCount} color="secondary">
+                <ShoppingCart />
+              </Badge>
+            </IconButton>
+          )}
           <IconButton color="inherit" onClick={() => navigate('/profile')}>
             <AccountCircle />
             {username && (

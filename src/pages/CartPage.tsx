@@ -22,7 +22,7 @@ const CartPage: React.FC = () => {
 
   return (
     <Container>
-      <Header />
+      <Header showCartIcon={false}/>
       <Typography variant="h4" style={{ marginTop: '20px' }}>
         Cart: {totalQuantity} {totalQuantity === 1 ? 'item' : 'items'}
       </Typography>
