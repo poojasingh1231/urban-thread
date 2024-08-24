@@ -21,10 +21,10 @@ const Header: React.FC<HeaderProps> = ({ showCartIcon = true }) => {
           My Store
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {showCartIcon && (  // Check if the cart icon should be shown
+          {showCartIcon && (  
             <IconButton color="inherit" onClick={() => navigate('/cart')}>
               <Badge badgeContent={cartCount} color="secondary">
-                <ShoppingCart />
+                <ShoppingCart data-testid="ShoppingCartIcon"/>
               </Badge>
             </IconButton>
           )}
