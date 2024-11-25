@@ -1,4 +1,3 @@
-// productsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Product {
@@ -7,7 +6,7 @@ interface Product {
   price: number;
   description: string;
   image: string;
-  category: string;  // Add the category field here
+  category: string;  
 }
 
 interface ProductsState {

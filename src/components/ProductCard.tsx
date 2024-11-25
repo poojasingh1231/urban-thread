@@ -72,7 +72,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           sx={{
             objectFit: 'contain',
             width: '100%',
-            height: '180px', // Fixed height for consistency
+            height: '180px', 
             marginBottom: 2,
           }}
         />

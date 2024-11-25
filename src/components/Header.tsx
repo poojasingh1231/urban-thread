@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from '../redux/store';
 
 interface HeaderProps {
-  showCartIcon?: boolean; // This prop controls the visibility of the cart icon
+  showCartIcon?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({ showCartIcon = true }) => {
